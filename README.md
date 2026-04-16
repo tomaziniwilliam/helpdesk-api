@@ -1,14 +1,14 @@
 # 🚀 Help Desk API
 
-API REST para gerenciamento de chamados (Help Desk), desenvolvida com Node.js, Express e MongoDB, incluindo autenticação com JWT.
+API REST para gerenciamento de chamados (Help Desk), desenvolvida com Node.js, Express e MongoDB, incluindo autenticação com JWT, controle de usuários e gestão de SLA.
 
 ---
 
 ## 📌 Sobre o projeto
 
-Este projeto foi desenvolvido com base em experiências reais em suporte técnico, incluindo controle de chamados, prioridade e estrutura preparada para SLA (Service Level Agreement).
+Este projeto está sendo desenvolvido com base em experiências reais em suporte técnico, incluindo gestão de chamados, priorização e controle de SLA (Service Level Agreement).
 
-A aplicação permite o gerenciamento completo de chamados, com autenticação de usuários e controle de acesso.
+A aplicação simula um ambiente real de atendimento, com controle de usuários, segurança e métricas operacionais, permitindo o gerenciamento completo de chamados.
 
 ---
 
@@ -19,16 +19,44 @@ A aplicação permite o gerenciamento completo de chamados, com autenticação d
 - Login com geração de token JWT
 - Senha criptografada com bcrypt
 
+---
+
 ### 🎫 Chamados
-- Criar chamado
-- Listar chamados
-- Buscar chamado por ID
+- Criar chamado vinculado ao usuário autenticado
+- Listar chamados do próprio usuário
+- Buscar chamado por ID (com controle de acesso)
 - Atualizar chamado
 - Deletar chamado
 
+---
+
+### ⏱️ SLA (Service Level Agreement)
+- Definição automática de SLA por prioridade:
+  - Alta: 4h
+  - Média: 8h
+  - Baixa: 24h
+- Cálculo automático de `dataLimite`
+- Recalculo de SLA ao atualizar prioridade
+- Identificação de chamados:
+  - Dentro do prazo
+  - Vencidos (SLA estourado)
+
+---
+
+### 🚨 Monitoramento
+- Endpoint de chamados atrasados
+- Dashboard com métricas:
+  - Total de chamados
+  - Chamados abertos
+  - Chamados fechados
+  - Chamados atrasados
+
+---
+
 ### 🛡️ Segurança
 - Rotas protegidas com JWT
-- Acesso apenas para usuários autenticados
+- Controle de acesso por usuário
+- Cada usuário acessa apenas seus próprios chamados
 
 ---
 
@@ -48,12 +76,12 @@ A aplicação permite o gerenciamento completo de chamados, com autenticação d
 ## 📁 Estrutura do projeto
 
 /helpdesk-api
- ├── controllers
- ├── models
- ├── routes
- ├── middlewares
- ├── config
- ├── server.js
+├── controllers
+├── models
+├── routes
+├── middlewares
+├── config
+├── server.js
 
 ---
 
@@ -68,7 +96,7 @@ A aplicação permite o gerenciamento completo de chamados, com autenticação d
 ### 🔹 Instalação
 
 ```bash
-git clone https://github.com/seu-usuario/helpdesk-api.git
+git clone https://github.com/tomaziniwilliam/helpdesk-api.git
 cd helpdesk-api
 npm install
 ```
@@ -95,9 +123,9 @@ POST:
 
 Body:
 {
-  "nome": "William",
-  "email": "william@email.com",
-  "senha": "123456"
+ "nome": "",
+  "email": "",
+  "senha": ""
 }
 
 ---
@@ -123,41 +151,68 @@ Authorization: Bearer SEU_TOKEN
 
 ## 🎫 Endpoints de Chamados
 
-| Método | Rota | Descrição |
-|------|------|---------|
-| POST | /api/chamados | Criar chamado |
-| GET | /api/chamados | Listar chamados |
-| GET | /api/chamados/:id | Buscar chamado |
-| PUT | /api/chamados/:id | Atualizar chamado |
-| DELETE | /api/chamados/:id | Deletar chamado |
+| Método | Rota                    | Descrição                       |
+| ------ | ----------------------- | ------------------------------- |
+| POST   | /api/chamados           | Criar chamado                   |
+| GET    | /api/chamados           | Listar chamados do usuário      |
+| GET    | /api/chamados/:id       | Buscar chamado                  |
+| PUT    | /api/chamados/:id       | Atualizar chamado               |
+| DELETE | /api/chamados/:id       | Deletar chamado                 |
+| GET    | /api/chamados/atrasados | Listar chamados com SLA vencido |
+| GET    | /api/chamados/dashboard | Métricas gerais                 |
+
 
 ---
 
 ## 💡 Diferenciais do projeto
 
 - Baseado em cenário real de suporte técnico
-- Estrutura preparada para controle de SLA
+- Implementação de SLA automático por prioridade
+- Controle de usuários (multiusuário)
+- Segurança com JWT e isolamento de dados por usuário
+- Monitoramento de chamados atrasados
+- Dashboard com métricas operacionais
 - Organização em camadas (Controller, Model, Routes)
-- Autenticação com JWT
-- Código limpo e escalável
 
 ---
 
 ## 🚀 Melhorias futuras
 
-- Implementar SLA automático por prioridade
-- Vincular chamados ao usuário criador
-- Criar interface web (frontend)
+- Interface web (frontend)
+- Dashboard visual com gráficos
+- Notificações de SLA (email/webhook)
 - Deploy em nuvem (Render / Railway)
+- Testes automatizados
 
 ---
 
 ## 👨‍💻 Autor
 
 William Tomazini
+Experiência com suporte técnico, infraestrutura e ambientes críticos
+Em transição para desenvolvimento backend
 
 ---
 
 ## 📄 Licença
 
 MIT
+
+
+## ▶️ Como rodar o projeto
+
+### 🔹 Pré-requisitos
+- Node.js instalado
+- MongoDB rodando localmente
+
+---
+
+### 🔹 Instalação
+
+```bash
+git clone https://github.com/tomaziniwilliam/helpdesk-api.git
+cd helpdesk-api
+npm install
+
+🔹 Rodar aplicação
+ run dev
